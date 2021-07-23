@@ -36,6 +36,7 @@ class RepresentativeViewHolder(val binding: ViewholderRepresentativeBinding): Re
 
         //TODO: Show social links ** Hint: Use provided helper methods
         //TODO: Show www link ** Hint: Use provided helper methods
+        //
 
         binding.executePendingBindings()
     }
