@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.example.android.politicalpreparedness.databinding.FragmentLaunchBinding
 import com.example.android.politicalpreparedness.databinding.FragmentRepresentativeBinding
 import com.example.android.politicalpreparedness.network.models.Address
@@ -16,8 +17,10 @@ class DetailFragment : Fragment() {
 
     companion object {
         //TODO: Add Constant for Location request
+        private const val PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 100
     }
-
+    val representativeViewModel =
+            ViewModelProvider(this).get(RepresentativeViewModel::class.java)
     //TODO: Declare ViewModel
 
     override fun onCreateView(inflater: LayoutInflater,
@@ -27,6 +30,7 @@ class DetailFragment : Fragment() {
         binding.lifecycleOwner = this
 
         //TODO: Establish bindings
+        binding.viewModel = representativeViewModel
 
         //TODO: Define and assign Representative adapter
 

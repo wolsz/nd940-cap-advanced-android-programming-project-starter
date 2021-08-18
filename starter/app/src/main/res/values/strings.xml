@@ -12,6 +12,10 @@
     <string name="zip_hint">Zip</string>
     <string name="use_my_location">Use My Location</string>
     <string name="my_representatives_title">My Representatives</string>
+    <string name="the_www_link">The www link</string>
+    <string name="the_facebook_link">The facebook link</string>
+    <string name="the_twitter_link">The twitter link</string>
+    <string name="the_official_s_image">The Official\'s image</string>
 
     <!-- TODO: Add necessary string values -->
 

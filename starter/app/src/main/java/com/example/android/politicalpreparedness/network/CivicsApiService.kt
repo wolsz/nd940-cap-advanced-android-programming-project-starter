@@ -26,7 +26,7 @@ private val moshi = Moshi.Builder()
 
 private val retrofit = Retrofit.Builder()
         .addConverterFactory(MoshiConverterFactory.create(moshi))
-        .addCallAdapterFactory(CoroutineCallAdapterFactory())
+//        .addCallAdapterFactory(CoroutineCallAdapterFactory())
         .client(CivicsHttpClient.getClient())
         .baseUrl(BASE_URL)
         .build()
@@ -38,18 +38,18 @@ private val retrofit = Retrofit.Builder()
 interface CivicsApiService {
     //TODO: Add elections API Call
     @GET("elections")
-    fun getElectionsResults(): Deferred<ElectionResponse>
+    suspend fun getElectionsResults(): ElectionResponse
 
     //TODO: Add voterinfo API Call
     @GET("voterinfo")
-    fun getVoterInfoResults(
+    suspend fun getVoterInfoResults(
             @Query("electionId") electionId: Int,
-            @Query("address") address: String): Deferred<VoterInfoResponse>
+            @Query("address") address: String): VoterInfoResponse
 
     //TODO: Add representatives API Call
     @GET("representatives")
-    fun getRepresentativesResults(
-            @Query("address") address: String): Deferred<RepresentativeResponse>
+    suspend fun getRepresentativesResults(
+            @Query("address") address: String): RepresentativeResponse
 }
 
 object CivicsApi {
