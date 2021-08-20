@@ -1,11 +1,11 @@
 package com.example.android.politicalpreparedness.representative
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
+import com.example.android.politicalpreparedness.network.CivicsApi
+import com.example.android.politicalpreparedness.network.models.Address
 import com.example.android.politicalpreparedness.representative.model.Representative
 import com.example.android.politicalpreparedness.repository.Result
+import kotlinx.coroutines.launch
 
 class RepresentativeViewModel: ViewModel() {
 
@@ -22,6 +22,9 @@ class RepresentativeViewModel: ViewModel() {
     val zip: MutableLiveData<String> = _zip
 
 
+    private val _address = MutableLiveData<Address>()
+    val address: LiveData<Address>
+        get() = _address
 
     private val _representatives: MutableLiveData<Result<List<Representative>>> = MutableLiveData()
     val representatives: LiveData<List<Representative>> = Transformations.map(_representatives) {
@@ -32,6 +35,20 @@ class RepresentativeViewModel: ViewModel() {
         }
     }
 
+    fun getRepresentatives() {
+        _address.value = Address(_line1.toString(), line2.toString(), city.toString(), state.toString(), zip.toString())
+        if (_address.value != null) {
+            viewModelScope.launch {
+                try {
+                    val (offices, officials) = CivicsApi.retrofitService.getRepresentativesResults(_address.value!!.toFormattedString())
+                    _representatives.value = Result.Success(offices.flatMap { office -> office.getRepresentatives(officials) })
+                }
+                catch (ex: Throwable) {
+                    ex.printStackTrace()
+                }
+            }
+        }
+    }
     //TODO: Create function to fetch representatives from API from a provided address
 
     /**

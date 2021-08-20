@@ -5,9 +5,11 @@ import android.widget.ImageView
 import android.widget.Spinner
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.android.politicalpreparedness.R
+import com.example.android.politicalpreparedness.representative.model.Representative
 
 @BindingAdapter("profileImage")
 fun fetchImage(view: ImageView, src: String?) {
@@ -33,6 +35,12 @@ fun Spinner.setNewValue(value: String?) {
     if (position >= 0) {
         setSelection(position)
     }
+}
+
+@BindingAdapter("representativeData")
+fun representativesRecyclerView(recyclerView: RecyclerView, data: List<Representative>?) {
+    val adapter = recyclerView.adapter as RepresentativeListAdapter
+    adapter.submitList(data)
 }
 
 inline fun <reified T> toTypedAdapter(adapter: ArrayAdapter<*>): ArrayAdapter<T>{

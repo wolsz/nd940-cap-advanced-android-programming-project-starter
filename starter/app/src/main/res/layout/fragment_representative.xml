@@ -95,6 +95,7 @@
             android:autofillHints=""
             android:hint="@string/zip_hint"
             android:inputType="number"
+            android:text="@={viewModel.zip}"
             android:maxLength="5"
             app:layout_constraintEnd_toEndOf="@id/city"
             app:layout_constraintStart_toStartOf="parent"
@@ -105,6 +106,7 @@
             android:id="@+id/button_search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:onClick="@{()->viewModel.getRepresentatives()}"
             android:text="@string/find_my_representatives"
             app:layout_constraintTop_toBottomOf="@id/zip" />
 
