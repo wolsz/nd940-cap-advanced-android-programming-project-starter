@@ -5,12 +5,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.example.android.politicalpreparedness.databinding.FragmentElectionBinding
 import com.example.android.politicalpreparedness.databinding.FragmentLaunchBinding
+import com.example.android.politicalpreparedness.election.adapter.ElectionListAdapter
+import com.example.android.politicalpreparedness.election.adapter.ElectionListener
 
 class ElectionsFragment: Fragment() {
 
     //TODO: Declare ViewModel
+    private val viewModel : ElectionsViewModel by lazy {
+        val application = requireNotNull(this.activity).application
+        val viewModelFactory = ElectionsViewModelFactory(application)
+        ViewModelProvider(this, viewModelFactory).get(ElectionsViewModel::class.java)
+    }
+
+    private lateinit var upcomingElectionListAdapter: ElectionListAdapter
+    private lateinit var savedElectionListAdapter: ElectionListAdapter
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
@@ -21,11 +33,20 @@ class ElectionsFragment: Fragment() {
         //TODO: Add ViewModel values and create ViewModel
 
         //TODO: Add binding values
+        binding.viewModel = viewModel
 
         //TODO: Link elections to voter info
 
         //TODO: Initiate recycler adapters
+        upcomingElectionListAdapter = ElectionListAdapter(ElectionListener {
+            viewModel.upcomingElectionSelected(it)
+        })
+        binding.upcomingElectionsList.adapter = upcomingElectionListAdapter
 
+        savedElectionListAdapter = ElectionListAdapter(ElectionListener {
+            viewModel.savedElectionSelected(it)
+        })
+        binding.savedElectionsList.adapter = savedElectionListAdapter
         //TODO: Populate recycler adapters
         return binding.root
 
