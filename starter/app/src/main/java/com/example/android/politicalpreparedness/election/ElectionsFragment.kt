@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.android.politicalpreparedness.databinding.FragmentElectionBinding
@@ -47,6 +48,14 @@ class ElectionsFragment: Fragment() {
             viewModel.savedElectionSelected(it)
         })
         binding.savedElectionsList.adapter = savedElectionListAdapter
+
+        viewModel.navigationAddress.observe(this, Observer {
+            directions ->
+            directions?.let {
+                this.findNavController().navigate(directions)
+                viewModel.doneNavigating()
+            }
+        })
         //TODO: Populate recycler adapters
         return binding.root
 

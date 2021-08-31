@@ -12,7 +12,8 @@ class ElectionsViewModel(app: Application) : ViewModel() {
 
 
     private val _navigationAddress = MutableLiveData<NavDirections?>()
-    val navigationAddress: LiveData<NavDirections?> = _navigationAddress
+    val navigationAddress: LiveData<NavDirections?>
+        get() = _navigationAddress
 
     //TODO: Create live data val for upcoming elections
 
@@ -27,6 +28,10 @@ class ElectionsViewModel(app: Application) : ViewModel() {
 
     fun savedElectionSelected(election: Election) {
         _navigationAddress.value = ElectionsFragmentDirections.actionElectionsFragmentToVoterInfoFragment(election.id, election.division)
+    }
+
+    fun doneNavigating() {
+        _navigationAddress.value = null
     }
 
 }
