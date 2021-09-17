@@ -4,10 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.example.android.politicalpreparedness.R
 import com.example.android.politicalpreparedness.databinding.FragmentElectionBinding
 import com.example.android.politicalpreparedness.databinding.FragmentLaunchBinding
 import com.example.android.politicalpreparedness.election.adapter.ElectionListAdapter
@@ -29,6 +31,11 @@ class ElectionsFragment: Fragment() {
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val binding = FragmentElectionBinding.inflate(inflater)
+//        val binding: FragmentElectionBinding = DataBindingUtil.inflate(
+//                inflater,
+//                R.layout.fragment_election,
+//                container,
+//                false)
         binding.lifecycleOwner = this
 
         //TODO: Add ViewModel values and create ViewModel
@@ -49,7 +56,7 @@ class ElectionsFragment: Fragment() {
         })
         binding.savedElectionsList.adapter = savedElectionListAdapter
 
-        viewModel.navigationAddress.observe(this, Observer {
+        viewModel.navigationAddress.observe(viewLifecycleOwner, Observer {
             directions ->
             directions?.let {
                 this.findNavController().navigate(directions)
