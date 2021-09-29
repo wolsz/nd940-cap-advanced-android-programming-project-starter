@@ -1,16 +1,19 @@
 package com.example.android.politicalpreparedness.network.models
 
-import androidx.room.ColumnInfo
-import androidx.room.Embedded
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import androidx.room.*
 import com.squareup.moshi.Json
 import java.util.*
 
-@Entity(tableName = "followed_elections_table")
+@Entity
 data class FollowedElection(
-        @PrimaryKey val id: Int,
-        @ColumnInfo(name = "name")val name: String,
-        @ColumnInfo(name = "electionDay")val electionDay: Date,
-        @Embedded(prefix = "division_") @Json(name="ocdDivisionId") val division: Division
+        @PrimaryKey val idFollowed: Int
+)
+
+data class ElectionAndFollowed(
+        @Embedded val election: Election,
+        @Relation(
+            parentColumn = "id",
+            entityColumn = "idFollowed"
+        )
+        val followed: FollowedElection
 )

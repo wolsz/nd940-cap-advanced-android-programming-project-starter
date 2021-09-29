@@ -23,8 +23,9 @@ class VoterInfoFragment : Fragment() {
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val binding = FragmentVoterInfoBinding.inflate(inflater)
-        binding.lifecycleOwner = this
         binding.viewModel = viewModel
+        binding.lifecycleOwner = this
+
 
         val electionId = args.argElectionId
         val division = args.argDivision
@@ -38,7 +39,9 @@ class VoterInfoFragment : Fragment() {
         /**
         Hint: You will need to ensure proper data is provided from previous fragment.
         */
-
+        if (division.state.isNotBlank()) {
+            viewModel.fetchVoterInfo(electionId, division.state)
+        }
 
         //TODO: Handle loading of URLs
 

@@ -52,7 +52,7 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toTopOf="@+id/guideline"
             app:layout_constraintTop_toBottomOf="@+id/upcoming_elections_title"
-            electionsListData="@{viewModel.upcomingElections}"
+            app:electionsListData="@{viewModel.upcomingElections}"
             tools:layout_editor_absoluteX="157dp" />
 
         <androidx.recyclerview.widget.RecyclerView

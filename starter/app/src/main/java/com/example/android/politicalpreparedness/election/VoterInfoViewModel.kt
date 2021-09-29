@@ -1,15 +1,18 @@
 package com.example.android.politicalpreparedness.election
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import androidx.navigation.NavDirections
 import com.example.android.politicalpreparedness.database.ElectionDatabase
+import com.example.android.politicalpreparedness.network.CivicsApi
+import com.example.android.politicalpreparedness.network.models.VoterInfoResponse
 import com.example.android.politicalpreparedness.repository.ElectionsRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class VoterInfoViewModel(app: Application) : AndroidViewModel(app) {
+
 
     private val _navigationAddress = MutableLiveData<NavDirections?>()
     val navigationAddress: LiveData<NavDirections?>
@@ -20,8 +23,27 @@ class VoterInfoViewModel(app: Application) : AndroidViewModel(app) {
 
 
     //TODO: Add live data to hold voter info
+    private val _voterInfo = MutableLiveData<VoterInfoResponse>()
+    val voterInfo: LiveData<VoterInfoResponse>
+        get() = _voterInfo
 
     //TODO: Add var and methods to populate voter info
+
+    fun fetchVoterInfo(electionId: Int, state: String) {
+        viewModelScope.launch {
+            getVoterInfo(electionId, state)
+        }
+    }
+
+    private suspend fun getVoterInfo(electionId: Int, state: String) {
+        withContext(Dispatchers.IO) {
+            try {
+                _voterInfo.value = CivicsApi.retrofitService.getVoterInfoResults(electionId, state)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
 
     //TODO: Add var and methods to support loading URLs
 

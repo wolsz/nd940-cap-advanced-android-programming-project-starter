@@ -3,6 +3,8 @@ package com.example.android.politicalpreparedness.database
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.android.politicalpreparedness.network.models.Election
+import com.example.android.politicalpreparedness.network.models.ElectionAndFollowed
+import com.example.android.politicalpreparedness.network.models.FollowedElection
 
 @Dao
 interface ElectionDao {
@@ -24,5 +26,14 @@ interface ElectionDao {
     //TODO: Add clear query
     @Query("DELETE FROM election_table")
     suspend fun removeAll()
+
+    //Insert a followed election id
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertFollowed(followed: FollowedElection)
+
+    //Get all followed elections
+    @Transaction
+    @Query("SELECT * FROM election_table ORDER BY electionDay ASC")
+    suspend fun getAllFollowedElections(): List<ElectionAndFollowed>
 
 }
