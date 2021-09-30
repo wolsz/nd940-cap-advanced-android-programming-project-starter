@@ -39,8 +39,11 @@ class VoterInfoFragment : Fragment() {
         /**
         Hint: You will need to ensure proper data is provided from previous fragment.
         */
-        if (division.state.isNotBlank()) {
-            viewModel.fetchVoterInfo(electionId, division.state)
+        if (division.state.isNotBlank() && division.country.isNotBlank()) {
+            viewModel.fetchVoterInfo(electionId, "${division.state}, ${division.country}" )
+            Log.i("VoterInfoFragment", "id = ${electionId}, state = ${division.state}")
+        } else if (electionId == 2000) {
+            viewModel.fetchVoterInfo(electionId, "ny, ${division.country}" )
         }
 
         //TODO: Handle loading of URLs

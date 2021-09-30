@@ -1,6 +1,7 @@
 package com.example.android.politicalpreparedness.election
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.*
 import androidx.navigation.NavDirections
 import com.example.android.politicalpreparedness.database.ElectionDatabase
@@ -31,6 +32,7 @@ class VoterInfoViewModel(app: Application) : AndroidViewModel(app) {
 
     fun fetchVoterInfo(electionId: Int, state: String) {
         viewModelScope.launch {
+            Log.i("VoterInfoFragment -", "id = ${electionId}, state = ${state}")
             getVoterInfo(electionId, state)
         }
     }
@@ -38,9 +40,14 @@ class VoterInfoViewModel(app: Application) : AndroidViewModel(app) {
     private suspend fun getVoterInfo(electionId: Int, state: String) {
         withContext(Dispatchers.IO) {
             try {
-                _voterInfo.value = CivicsApi.retrofitService.getVoterInfoResults(electionId, state)
+//                _voterInfo.value = CivicsApi.retrofitService.getVoterInfoResults(electionId, state)
+                val response = CivicsApi.retrofitService.getVoterInfoResults(electionId, state)
+                _voterInfo.postValue(response)
+                Log.i("VoterInfoViewModel", "${response?.state?.get(0)?.electionAdministrationBody?.electionInfoUrl}  ---")
+                Log.i("VoterInfoViewModel", response.election.name)
             } catch (e: Exception) {
                 e.printStackTrace()
+                Log.i("Error-- ","Some error here")
             }
         }
     }

@@ -23,7 +23,7 @@
             android:padding="@dimen/default_padding"
             android:singleLine="true"
             app:layout_constraintTop_toTopOf="parent"
-            app:title="Election Name" />
+            app:title="@{viewModel.voterInfo.election.name}" />
 
         <!-- TODO: Add visual styling -->
         <TextView
@@ -31,7 +31,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/default_padding"
+            android:text="@{viewModel.voterInfo.election.electionDay.toString()}"
             app:layout_constraintTop_toBottomOf="@id/election_name"
+            tools:layout_editor_absoluteX="8dp"
             tools:text="12 November 2055" />
 
         <!-- TODO: Add visual styling and content -->
@@ -39,6 +41,7 @@
             android:id="@+id/state_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@string/election_information"
             app:layout_constraintTop_toBottomOf="@id/election_date"
             app:layout_constraintStart_toStartOf="@id/election_date" />
 
