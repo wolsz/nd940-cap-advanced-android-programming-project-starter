@@ -16,8 +16,9 @@ class ElectionsViewModel(app: Application) : AndroidViewModel(app) {
     val navigationAddress: LiveData<NavDirections?>
         get() = _navigationAddress
 
-    private val database = ElectionDatabase.getInstance(app.applicationContext)
-    private val electionsRepository = ElectionsRepository(database)
+//    private val database = ElectionDatabase.getInstance(app.applicationContext)
+    private val dataSource = ElectionDatabase.getInstance(app.applicationContext).electionDao
+    private val electionsRepository = ElectionsRepository(dataSource)
 
     //TODO: Create live data val for upcoming elections
     val upcomingElections = electionsRepository.currentElections

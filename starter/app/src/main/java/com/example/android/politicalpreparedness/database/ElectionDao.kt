@@ -36,4 +36,7 @@ interface ElectionDao {
     @Query("SELECT * FROM election_table ORDER BY electionDay ASC")
     suspend fun getAllFollowedElections(): List<ElectionAndFollowed>
 
+    @Query("SELECT * FROM FollowedElection WHERE idFollowed = :id LIMIT 1")
+    suspend fun findElectionId(id: Int): Int?
+
 }

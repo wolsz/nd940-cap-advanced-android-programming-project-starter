@@ -1,13 +1,16 @@
 package com.example.android.politicalpreparedness.election
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
-import com.example.android.politicalpreparedness.databinding.FragmentLaunchBinding
 import com.example.android.politicalpreparedness.databinding.FragmentVoterInfoBinding
+import kotlin.Exception
 
 class VoterInfoFragment : Fragment() {
 
@@ -36,6 +39,8 @@ class VoterInfoFragment : Fragment() {
         //TODO: Add binding values
 
         //TODO: Populate voter info -- hide views without provided data.
+        // See if this election is followed
+        viewModel.setIfElectionIsFollowed(electionId)
         /**
         Hint: You will need to ensure proper data is provided from previous fragment.
         */
@@ -47,6 +52,14 @@ class VoterInfoFragment : Fragment() {
         }
 
         //TODO: Handle loading of URLs
+        viewModel.url.observe(viewLifecycleOwner, Observer { url ->
+            try {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                startActivity(intent)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        } )
 
         //TODO: Handle save button UI state
         //TODO: cont'd Handle save button clicks

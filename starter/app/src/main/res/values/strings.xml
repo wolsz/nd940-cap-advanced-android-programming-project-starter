@@ -17,6 +17,9 @@
     <string name="the_twitter_link">The twitter link</string>
     <string name="the_official_s_image">The Official\'s image</string>
     <string name="election_information">Election Information</string>
+    <string name="corresponding_address">Corresponding Address</string>
+    <string name="voting_location">Voting Location</string>
+    <string name="ballot_information">Ballot Information</string>
 
     <!-- TODO: Add necessary string values -->
 

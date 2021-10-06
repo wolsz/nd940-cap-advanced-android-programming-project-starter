@@ -19,8 +19,17 @@ class VoterInfoViewModel(app: Application) : AndroidViewModel(app) {
     val navigationAddress: LiveData<NavDirections?>
         get() = _navigationAddress
 
-    private val database = ElectionDatabase.getInstance(app.applicationContext)
-    private val electionsRepository = ElectionsRepository(database)
+    private val _url = MutableLiveData<String>()
+    val url: LiveData<String>
+        get() = _url
+
+    private val _isElectionFollowed = MutableLiveData<Boolean>()
+    val isElectionFollowed: LiveData<Boolean>
+        get() = _isElectionFollowed
+
+    private val dataSource = ElectionDatabase.getInstance(app.applicationContext).electionDao
+//    private val database = ElectionDatabase.getInstance(app.applicationContext)
+    private val electionsRepository = ElectionsRepository(dataSource)
 
 
     //TODO: Add live data to hold voter info
@@ -29,6 +38,9 @@ class VoterInfoViewModel(app: Application) : AndroidViewModel(app) {
         get() = _voterInfo
 
     //TODO: Add var and methods to populate voter info
+    init {
+//        _isElectionFollowed.value = false
+    }
 
     fun fetchVoterInfo(electionId: Int, state: String) {
         viewModelScope.launch {
@@ -49,6 +61,16 @@ class VoterInfoViewModel(app: Application) : AndroidViewModel(app) {
                 e.printStackTrace()
                 Log.i("Error-- ","Some error here")
             }
+        }
+    }
+
+    fun launchPage(url: String) {
+        _url.value = url
+    }
+
+    fun setIfElectionIsFollowed(electionId: Int) {
+        viewModelScope.launch {
+            _isElectionFollowed.value = electionsRepository.isElectionSaved(electionId)
         }
     }
 

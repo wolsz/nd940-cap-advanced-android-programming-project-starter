@@ -1,5 +1,8 @@
 package com.example.android.politicalpreparedness.election.adapter
 
+import android.util.Log
+import android.view.View
+import android.widget.Button
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.android.politicalpreparedness.network.models.Election
@@ -9,3 +12,14 @@ import com.example.android.politicalpreparedness.network.models.Election
         val adapter = recyclerView.adapter as ElectionListAdapter
         adapter.submitList(data)
     }
+
+@BindingAdapter("setFollowedState")
+ fun Button.setFollowedState(isFollowed: Boolean) {
+     if (isFollowed) {
+         Log.v("BindingAdapter -- Followed", "$isFollowed" )
+         this.text = "UNFOLLOW"
+     } else {
+         Log.v("BindingAdapter -- not Followed", "$isFollowed" )
+         this.text = "FOLLOW"
+     }
+ }
