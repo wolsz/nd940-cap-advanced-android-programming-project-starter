@@ -74,6 +74,28 @@ class VoterInfoViewModel(app: Application) : AndroidViewModel(app) {
         }
     }
 
+    fun takeCorrectFollowAction() {
+        if (isElectionFollowed.value == true) {
+            unFollowElection(voterInfo.value!!.election.id)
+        } else {
+            followElection(voterInfo.value!!.election.id)
+        }
+    }
+
+    private fun followElection(id: Int) {
+        viewModelScope.launch {
+            electionsRepository.insertFollowedElection(id)
+            _isElectionFollowed.value = true
+        }
+    }
+
+    private fun unFollowElection(id: Int) {
+        viewModelScope.launch {
+            electionsRepository.deleteFollowedElection(id)
+            _isElectionFollowed.value = false
+        }
+    }
+
     //TODO: Add var and methods to support loading URLs
 
     //TODO: Add var and methods to save and remove elections to local database

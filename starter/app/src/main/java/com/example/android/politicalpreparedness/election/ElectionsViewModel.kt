@@ -16,6 +16,10 @@ class ElectionsViewModel(app: Application) : AndroidViewModel(app) {
     val navigationAddress: LiveData<NavDirections?>
         get() = _navigationAddress
 
+    private val _savedElections = MutableLiveData<List<Election>>()
+    val savedElections: LiveData<List<Election>>
+        get() = _savedElections
+
 //    private val database = ElectionDatabase.getInstance(app.applicationContext)
     private val dataSource = ElectionDatabase.getInstance(app.applicationContext).electionDao
     private val electionsRepository = ElectionsRepository(dataSource)
@@ -48,6 +52,13 @@ class ElectionsViewModel(app: Application) : AndroidViewModel(app) {
 
     fun doneNavigating() {
         _navigationAddress.value = null
+    }
+
+    fun refreshFollowedElection() {
+        viewModelScope.launch {
+            _savedElections.value = electionsRepository.getFollowedElections()
+//            electionsRepository.getFollowedElections()
+        }
     }
 
 }

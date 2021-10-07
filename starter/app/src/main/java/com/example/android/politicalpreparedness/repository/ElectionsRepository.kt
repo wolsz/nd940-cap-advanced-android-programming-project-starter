@@ -1,9 +1,8 @@
 package com.example.android.politicalpreparedness.repository
 
-import android.util.Log
 import com.example.android.politicalpreparedness.database.ElectionDao
-import com.example.android.politicalpreparedness.database.ElectionDatabase
 import com.example.android.politicalpreparedness.network.CivicsApi
+import com.example.android.politicalpreparedness.network.models.Election
 import com.example.android.politicalpreparedness.network.models.FollowedElection
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -12,6 +11,15 @@ import kotlinx.coroutines.withContext
 class ElectionsRepository(private val database: ElectionDao) {
 
     val currentElections = database.getAllElections()
+
+    suspend fun getFollowedElections() : List<Election> {
+        return withContext(Dispatchers.IO) {
+//            return@withContext database.getAllFollowedElections()
+            return@withContext database.getAllFollowedElections().map { ele -> ele.election}
+//            database.getAllFollowedElections()
+//            return@withContext listOf<Election>()
+        }
+    }
 
     suspend fun refreshElections() {
         withContext(Dispatchers.IO) {
@@ -26,7 +34,7 @@ class ElectionsRepository(private val database: ElectionDao) {
         }
     }
 
-    suspend fun isElectionSaved(electionId: Int): Boolean? {
+    suspend fun isElectionSaved(electionId: Int): Boolean {
         return withContext(Dispatchers.IO) {
             return@withContext database.findElectionId(electionId) != null
         }
@@ -36,7 +44,12 @@ class ElectionsRepository(private val database: ElectionDao) {
         withContext(Dispatchers.IO) {
             database.insertFollowed(FollowedElection(electionId))
         }
+    }
 
+    suspend fun deleteFollowedElection(electionId: Int) {
+        withContext(Dispatchers.IO) {
+            database.deleteFollowed(FollowedElection(electionId))
+        }
     }
 
 }

@@ -31,9 +31,13 @@ interface ElectionDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertFollowed(followed: FollowedElection)
 
+    //Delete a followed election
+    @Delete
+    suspend fun deleteFollowed(followed: FollowedElection)
+
     //Get all followed elections
     @Transaction
-    @Query("SELECT * FROM election_table ORDER BY electionDay ASC")
+    @Query("SELECT * FROM election_table JOIN FollowedElection ON election_table.id = FollowedElection.idFollowed ORDER BY electionDay ASC")
     suspend fun getAllFollowedElections(): List<ElectionAndFollowed>
 
     @Query("SELECT * FROM FollowedElection WHERE idFollowed = :id LIMIT 1")

@@ -1,6 +1,7 @@
 package com.example.android.politicalpreparedness.election
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -64,6 +65,10 @@ class ElectionsFragment: Fragment() {
             }
         })
         //TODO: Populate recycler adapters
+
+        Log.v("Another Fragment", "Creating the view again")
+        viewModel.refreshFollowedElection()
+
         return binding.root
 
     }
