@@ -15,6 +15,7 @@ import com.example.android.politicalpreparedness.databinding.FragmentElectionBin
 import com.example.android.politicalpreparedness.databinding.FragmentLaunchBinding
 import com.example.android.politicalpreparedness.election.adapter.ElectionListAdapter
 import com.example.android.politicalpreparedness.election.adapter.ElectionListener
+import com.example.android.politicalpreparedness.network.NetworkUtil
 
 class ElectionsFragment: Fragment() {
 
@@ -32,11 +33,7 @@ class ElectionsFragment: Fragment() {
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val binding = FragmentElectionBinding.inflate(inflater)
-//        val binding: FragmentElectionBinding = DataBindingUtil.inflate(
-//                inflater,
-//                R.layout.fragment_election,
-//                container,
-//                false)
+
         binding.lifecycleOwner = this
 
         //TODO: Add ViewModel values and create ViewModel

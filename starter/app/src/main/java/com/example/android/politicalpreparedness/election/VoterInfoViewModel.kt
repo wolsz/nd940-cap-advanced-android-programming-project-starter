@@ -55,7 +55,7 @@ class VoterInfoViewModel(app: Application) : AndroidViewModel(app) {
 //                _voterInfo.value = CivicsApi.retrofitService.getVoterInfoResults(electionId, state)
                 val response = CivicsApi.retrofitService.getVoterInfoResults(electionId, state)
                 _voterInfo.postValue(response)
-                Log.i("VoterInfoViewModel", "${response?.state?.get(0)?.electionAdministrationBody?.electionInfoUrl}  ---")
+                Log.i("VoterInfoViewModel", "${response.state?.get(0)?.electionAdministrationBody?.electionInfoUrl}  ---")
                 Log.i("VoterInfoViewModel", response.election.name)
             } catch (e: Exception) {
                 e.printStackTrace()

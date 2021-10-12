@@ -14,10 +14,7 @@ class ElectionsRepository(private val database: ElectionDao) {
 
     suspend fun getFollowedElections() : List<Election> {
         return withContext(Dispatchers.IO) {
-//            return@withContext database.getAllFollowedElections()
             return@withContext database.getAllFollowedElections().map { ele -> ele.election}
-//            database.getAllFollowedElections()
-//            return@withContext listOf<Election>()
         }
     }
 
