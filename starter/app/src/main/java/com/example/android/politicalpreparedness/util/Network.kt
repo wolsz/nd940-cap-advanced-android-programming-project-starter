@@ -1,4 +1,4 @@
-package com.example.android.politicalpreparedness.network
+package com.example.android.politicalpreparedness.util
 
 import android.content.Context
 import android.net.ConnectivityManager
@@ -6,7 +6,7 @@ import android.net.NetworkCapabilities
 import android.os.Build
 import android.util.Log
 
-class NetworkUtil {
+class Network {
     companion object {
         fun isOnline(context: Context): Boolean {
             val connectivityManager =
