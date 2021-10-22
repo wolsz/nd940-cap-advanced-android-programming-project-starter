@@ -15,7 +15,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.observe
 import com.example.android.politicalpreparedness.R
 import com.example.android.politicalpreparedness.databinding.FragmentRepresentativeBinding
 import com.example.android.politicalpreparedness.network.models.Address
@@ -27,6 +29,7 @@ import com.google.android.gms.location.LocationSettingsRequest
 //import com.google.android.gms.location.R
 import com.google.android.material.snackbar.Snackbar
 import java.util.*
+
 
 class RepresentativeFragment : Fragment() {
 
@@ -55,6 +58,10 @@ class RepresentativeFragment : Fragment() {
 
         //TODO: Establish bindings
         binding.viewModel = viewModel
+
+        viewModel.showSnackBarInt.observe(viewLifecycleOwner, Observer {resId ->
+            Snackbar.make(this.requireView(), getString(resId), Snackbar.LENGTH_LONG).show()
+        })
 
         //TODO: Define and assign Representative adapter
         representativeAdapter = RepresentativeListAdapter()

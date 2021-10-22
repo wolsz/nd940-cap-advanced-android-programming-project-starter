@@ -24,5 +24,11 @@
     <!-- TODO: Add necessary string values -->
     <string name="permission_denied_explanation">You need to grant location permission in order to a lookup based on your the location.</string>
     <string name="location_required_error">Location services must be enabled to use the app</string>
+    <string name="follow_label">FOLLOW</string>
+    <string name="unfollow_label">UNFOLLOW</string>
+    <string name="err_enter_line1">Please enter street line1</string>
+    <string name="err_enter_city">Please enter a city</string>
+    <string name="err_enter_state">Please enter a state</string>
+    <string name="err_enter_zip">Please enter a zip code</string>
 
 </resources>
