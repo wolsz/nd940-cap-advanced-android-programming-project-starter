@@ -1,5 +1,6 @@
 package com.example.android.politicalpreparedness.representative
 
+import android.util.Log
 import androidx.databinding.Bindable
 import androidx.lifecycle.*
 import com.example.android.politicalpreparedness.R
@@ -33,6 +34,8 @@ class RepresentativeViewModel : ViewModel() {
     val zip = MutableLiveData("")
 //    val zip: MutableLiveData<String>
 //        get() = _zip
+
+//    val itemPosition = MutableLiveData<Int>(12)
 
     val showSnackBarInt: SingleLiveEvent<Int> = SingleLiveEvent()
 
@@ -99,6 +102,16 @@ class RepresentativeViewModel : ViewModel() {
         }
 
     }
+
+    fun myRepresentatives() {
+        Log.v("OUTPUT", "The value of line1 is ${line1.value}")
+        Log.v("OUTPUT", "The value of line2 is ${line2.value}")
+        Log.v("OUTPUT", "The value of city is ${city.value}")
+        Log.v("OUTPUT", "The value of state is ${state.value}")
+        Log.v("OUTPUT", "The value of zip is ${zip.value}")
+//        Log.v("OUTPUT", "The value of position is ${itemPosition.value}")
+    }
+
 
 //    fun getRepresentatives() {
 //        _address.value = Address(_line1.toString(), line2.toString(), city.toString(), state.toString(), zip.toString())
