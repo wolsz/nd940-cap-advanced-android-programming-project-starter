@@ -1,6 +1,7 @@
 package com.example.android.politicalpreparedness.representative
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.content.IntentSender
 import android.content.pm.PackageManager
@@ -11,6 +12,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
@@ -58,6 +60,11 @@ class RepresentativeFragment : Fragment() {
 
         //TODO: Establish bindings
         binding.viewModel = viewModel
+
+        binding.buttonSearch.setOnClickListener {
+            hideKeyboard()
+            viewModel.getTheRepresentatives()
+        }
 
         viewModel.showSnackBarInt.observe(viewLifecycleOwner, Observer {resId ->
             Snackbar.make(this.requireView(), getString(resId), Snackbar.LENGTH_LONG).show()
@@ -175,7 +182,7 @@ class RepresentativeFragment : Fragment() {
         locationSettingsResponseTask.addOnCompleteListener {
             if (it.isSuccessful) {
                 checkLocationPermissions(Manifest.permission.ACCESS_FINE_LOCATION, PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION)
-                Log.i(TAG, "checkDeviceLocationSettingsAndSave: Device location setting is on")
+                Log.i(TAG, "checkLocationPermissions: Device location setting is on")
 
             }
         }
@@ -186,6 +193,11 @@ class RepresentativeFragment : Fragment() {
         if (requestCode == REQUEST_TURN_DEVICE_LOCATION_ON) {
             checkDeviceLocationSettings(false)
         }
+    }
+
+    private fun hideKeyboard() {
+        val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(requireView().windowToken, 0)
     }
 
 }

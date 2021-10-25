@@ -107,7 +107,6 @@
             android:id="@+id/button_search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="@{()->viewModel.myRepresentatives()}"
             android:text="@string/find_my_representatives"
             app:layout_constraintTop_toBottomOf="@id/zip" />
 
@@ -158,3 +157,5 @@
 
     </androidx.constraintlayout.motion.widget.MotionLayout>
 </layout>
+
+<!--    android:onClick="@{()->viewModel.getTheRepresentatives()}"-->

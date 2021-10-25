@@ -56,6 +56,7 @@ fun representativesRecyclerView(recyclerView: RecyclerView, data: List<Represent
 }
 
 inline fun <reified T> toTypedAdapter(adapter: ArrayAdapter<*>): ArrayAdapter<T> {
+    @Suppress("UNCHECKED_CAST")
     return adapter as ArrayAdapter<T>
 }
 

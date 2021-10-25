@@ -80,6 +80,7 @@ class RepresentativeViewModel : ViewModel() {
     }
 
     fun getTheRepresentatives() {
+
         if (!validateEnteredData()) {
             return
         }
