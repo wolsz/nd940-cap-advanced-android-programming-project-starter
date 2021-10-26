@@ -1,12 +1,15 @@
 package com.example.android.politicalpreparedness.representative
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.location.Location
+import android.location.LocationManager
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -28,6 +31,7 @@ import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.LocationSettingsRequest
+import com.google.android.gms.maps.model.LatLng
 //import com.google.android.gms.location.R
 import com.google.android.material.snackbar.Snackbar
 import java.util.*
@@ -66,6 +70,11 @@ class RepresentativeFragment : Fragment() {
             viewModel.getTheRepresentatives()
         }
 
+        binding.buttonLocation.setOnClickListener {
+            hideKeyboard()
+            getLocation()
+        }
+
         viewModel.showSnackBarInt.observe(viewLifecycleOwner, Observer {resId ->
             Snackbar.make(this.requireView(), getString(resId), Snackbar.LENGTH_LONG).show()
         })
@@ -87,14 +96,12 @@ class RepresentativeFragment : Fragment() {
         if (requestCode == PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION) {
 
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-   //             checkLocationPermissions()
                 Toast.makeText(requireContext(), "Permission granted in Request Permission, moving on....", Toast.LENGTH_LONG).show()
+                Log.d("onRequestPermissionsResult", "Permission granted in Request Permission, moving on....")
+                locationGranted()
             } else {
-                Snackbar.make(
-                        requireView(),
-                        R.string.permission_denied_explanation,
-                        Snackbar.LENGTH_LONG
-                ).show()
+                showDenialDialog()
+                Log.d("onRequestPermissionsResult", "Showing snackbar to request permission.")
             }
 
         }
@@ -104,8 +111,9 @@ class RepresentativeFragment : Fragment() {
         when {
             ContextCompat.checkSelfPermission(requireContext(),
                     permissionString) == PackageManager.PERMISSION_GRANTED -> {
-                Log.d("checkLocationPermissions", "checkLocationPermissions: Permission granted")
-                Toast.makeText(requireContext(), "Permission granted in Check Location Permission", Toast.LENGTH_LONG).show()
+                Log.d("checkLocationPermissions", "checkLocationPermissions: Permission granted in top check")
+                Toast.makeText(requireContext(), "Permission granted in Check Location Permission: Permission granted in top check", Toast.LENGTH_LONG).show()
+                locationGranted()
             }
             shouldShowRequestPermissionRationale(permissionString) -> showReasonDialog(permissionString, requestCode)
             else -> {
@@ -114,13 +122,18 @@ class RepresentativeFragment : Fragment() {
         }
     }
 
+    private fun locationGranted() {
+        Log.d("locationGranted", "locationGranted: Yes granted... ")
+        viewModel.setLocationEnabled()
+    }
+
     private fun showReasonDialog(permissionString: String, requestCode: Int) {
         val alertBuilder = AlertDialog.Builder(requireContext())
 
         alertBuilder.apply {
             setMessage(R.string.permission_denied_explanation)
             setTitle("Permission required")
-            setPositiveButton("OK") { dialog, which ->
+            setPositiveButton("OK") { _: DialogInterface, _: Int ->
                 requestPermissions(arrayOf(permissionString), requestCode)
             }
         }
@@ -128,14 +141,34 @@ class RepresentativeFragment : Fragment() {
         dialog.show()
     }
 
+    private fun showDenialDialog() {
+        val alertBuilder = AlertDialog.Builder(requireContext())
 
-//    private fun isPermissionGranted(): Boolean {
-//        return ContextCompat.checkSelfPermission(requireContext(),
-//                Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
-//    }
+        alertBuilder.apply {
+            setMessage(R.string.permission_denied_explanation)
+            setTitle("Location permission denied")
+            setPositiveButton("OK") { _: DialogInterface, _: Int ->  }
+        }
+        val dialog = alertBuilder.create()
+        dialog.show()
+    }
 
+
+    @SuppressLint("MissingPermission")
     private fun getLocation() {
         //TODO: Get location from LocationServices
+
+        val fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+        val locationResult = fusedLocationClient.lastLocation
+        locationResult.
+        addOnSuccessListener { location ->
+            if (location != null) {
+                Log.d("getLocation", "getLocation: ${location}")
+                val address = geoCodeLocation(location)
+                viewModel.getRepresentativesByLocation(address)
+            }
+        }
+                .addOnFailureListener { exception -> exception.printStackTrace() }
         //TODO: The geoCodeLocation method is a helper function to change the lat/long location to a human readable street address
     }
 
@@ -143,7 +176,7 @@ class RepresentativeFragment : Fragment() {
         val geocoder = Geocoder(context, Locale.getDefault())
         return geocoder.getFromLocation(location.latitude, location.longitude, 1)
                 .map { address ->
-                    Address(address.thoroughfare, address.subThoroughfare, address.locality, address.adminArea, address.postalCode)
+                    Address("${address.subThoroughfare} ${address.thoroughfare}", "", address.locality?:address.subLocality, address.adminArea, address.postalCode)
                 }
                 .first()
     }
@@ -182,6 +215,7 @@ class RepresentativeFragment : Fragment() {
         locationSettingsResponseTask.addOnCompleteListener {
             if (it.isSuccessful) {
                 checkLocationPermissions(Manifest.permission.ACCESS_FINE_LOCATION, PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION)
+                viewModel.setDeviceLocationOn()
                 Log.i(TAG, "checkLocationPermissions: Device location setting is on")
 
             }

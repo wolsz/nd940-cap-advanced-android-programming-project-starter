@@ -39,6 +39,14 @@ class RepresentativeViewModel : ViewModel() {
 
     val showSnackBarInt: SingleLiveEvent<Int> = SingleLiveEvent()
 
+    private val _deviceLocationOn = MutableLiveData(false)
+    val deviceLocationOn: LiveData<Boolean>
+        get() = _deviceLocationOn
+
+    private val _locationEnabled = MutableLiveData(false)
+    val locationEnabled :LiveData<Boolean>
+        get() = _locationEnabled
+
 
 //    private val _address = MutableLiveData<Address>()
 //    val address: LiveData<Address>
@@ -111,6 +119,23 @@ class RepresentativeViewModel : ViewModel() {
         Log.v("OUTPUT", "The value of state is ${state.value}")
         Log.v("OUTPUT", "The value of zip is ${zip.value}")
 //        Log.v("OUTPUT", "The value of position is ${itemPosition.value}")
+    }
+
+    fun setLocationEnabled() {
+        _locationEnabled.value = true
+    }
+
+    fun setDeviceLocationOn() {
+        _deviceLocationOn.value = true
+    }
+
+    fun getRepresentativesByLocation(address: Address) {
+        line1.value = address.line1
+        line2.value = ""
+        city.value = address.city
+        state.value = address.state
+        zip.value = address.zip
+        getTheRepresentatives()
     }
 
 
