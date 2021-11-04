@@ -20,16 +20,10 @@ class ElectionsViewModel(app: Application) : AndroidViewModel(app) {
     val savedElections: LiveData<List<Election>>
         get() = _savedElections
 
-//    private val database = ElectionDatabase.getInstance(app.applicationContext)
     private val dataSource = ElectionDatabase.getInstance(app.applicationContext).electionDao
     private val electionsRepository = ElectionsRepository(dataSource)
 
-    //TODO: Create live data val for upcoming elections
-    val upcomingElections = electionsRepository.currentElections
-
-    //TODO: Create live data val for saved elections
-
-    //TODO: Create val and functions to populate live data for upcoming elections from the API and saved elections from local database
+     val upcomingElections = electionsRepository.currentElections
 
     init {
         refreshElections()
@@ -41,7 +35,6 @@ class ElectionsViewModel(app: Application) : AndroidViewModel(app) {
         }
     }
 
-    //TODO: Create functions to navigate to saved or upcoming election voter info
     fun upcomingElectionSelected(election: Election) {
         _navigationAddress.value = ElectionsFragmentDirections.actionElectionsFragmentToVoterInfoFragment(election.id, election.division)
     }
@@ -57,7 +50,6 @@ class ElectionsViewModel(app: Application) : AndroidViewModel(app) {
     fun refreshFollowedElection() {
         viewModelScope.launch {
             _savedElections.value = electionsRepository.getFollowedElections()
-//            electionsRepository.getFollowedElections()
         }
     }
 

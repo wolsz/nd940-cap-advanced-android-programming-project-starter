@@ -4,7 +4,6 @@ import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 
-//TODO: Create Factory to generate ElectionViewModel with provided election datasource
 @Suppress("UNCHECKED_CAST")
 class ElectionsViewModelFactory (val app: Application): ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {

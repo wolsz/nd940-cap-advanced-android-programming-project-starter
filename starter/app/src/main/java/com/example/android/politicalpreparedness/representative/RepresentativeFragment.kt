@@ -40,7 +40,6 @@ import java.util.*
 class RepresentativeFragment : Fragment() {
 
     companion object {
-        //TODO: Add Constant for Location request
         private const val PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 100
         const val REQUEST_TURN_DEVICE_LOCATION_ON = 5
     }
@@ -53,16 +52,14 @@ class RepresentativeFragment : Fragment() {
 
     private val TAG = RepresentativeFragment::class.java.simpleName
 
-    //TODO: Declare ViewModel
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+                              savedInstanceState: Bundle?): View {
         val binding = FragmentRepresentativeBinding.inflate(inflater)
 
         binding.lifecycleOwner = this
 
-        //TODO: Establish bindings
         binding.viewModel = viewModel
 
         binding.buttonSearch.setOnClickListener {
@@ -82,9 +79,6 @@ class RepresentativeFragment : Fragment() {
         //TODO: Define and assign Representative adapter
         representativeAdapter = RepresentativeListAdapter()
         binding.representativeList.adapter = representativeAdapter
-        //TODO: Populate Representative adapter
-
-        //TODO: Establish button listeners for field and location search
 
         checkDeviceLocationSettings()
         return binding.root
@@ -96,8 +90,8 @@ class RepresentativeFragment : Fragment() {
         if (requestCode == PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION) {
 
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(requireContext(), "Permission granted in Request Permission, moving on....", Toast.LENGTH_LONG).show()
-                Log.d("onRequestPermissionsResult", "Permission granted in Request Permission, moving on....")
+//                Toast.makeText(requireContext(), "Permission granted in Request Permission, moving on....", Toast.LENGTH_LONG).show()
+//                Log.d("onRequestPermissionsResult", "Permission granted in Request Permission, moving on....")
                 locationGranted()
             } else {
                 showDenialDialog()
@@ -111,7 +105,7 @@ class RepresentativeFragment : Fragment() {
         when {
             ContextCompat.checkSelfPermission(requireContext(),
                     permissionString) == PackageManager.PERMISSION_GRANTED -> {
-                Log.d("checkLocationPermissions", "checkLocationPermissions: Permission granted in top check")
+//                Log.d("checkLocationPermissions", "checkLocationPermissions: Permission granted in top check")
                 Toast.makeText(requireContext(), "Permission granted in Check Location Permission: Permission granted in top check", Toast.LENGTH_LONG).show()
                 locationGranted()
             }
@@ -156,20 +150,18 @@ class RepresentativeFragment : Fragment() {
 
     @SuppressLint("MissingPermission")
     private fun getLocation() {
-        //TODO: Get location from LocationServices
 
         val fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
         val locationResult = fusedLocationClient.lastLocation
         locationResult.
         addOnSuccessListener { location ->
             if (location != null) {
-                Log.d("getLocation", "getLocation: ${location}")
+                Log.d("getLocation", "getLocation: $location")
                 val address = geoCodeLocation(location)
                 viewModel.getRepresentativesByLocation(address)
             }
         }
                 .addOnFailureListener { exception -> exception.printStackTrace() }
-        //TODO: The geoCodeLocation method is a helper function to change the lat/long location to a human readable street address
     }
 
     private fun geoCodeLocation(location: Location): Address {

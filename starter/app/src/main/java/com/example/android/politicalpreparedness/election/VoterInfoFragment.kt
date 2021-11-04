@@ -24,7 +24,7 @@ class VoterInfoFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+                              savedInstanceState: Bundle?): View {
         val binding = FragmentVoterInfoBinding.inflate(inflater)
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
@@ -34,12 +34,6 @@ class VoterInfoFragment : Fragment() {
         val division = args.argDivision
 
 
-        //TODO: Add ViewModel values and create ViewModel
-
-        //TODO: Add binding values
-
-        //TODO: Populate voter info -- hide views without provided data.
-        // See if this election is followed
         viewModel.setIfElectionIsFollowed(electionId)
         /**
         Hint: You will need to ensure proper data is provided from previous fragment.
@@ -51,7 +45,6 @@ class VoterInfoFragment : Fragment() {
             viewModel.fetchVoterInfo(electionId, "ny, ${division.country}" )
         }
 
-        //TODO: Handle loading of URLs
         viewModel.url.observe(viewLifecycleOwner, Observer { url ->
             try {
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
@@ -61,12 +54,8 @@ class VoterInfoFragment : Fragment() {
             }
         } )
 
-        //TODO: Handle save button UI state
-        //TODO: cont'd Handle save button clicks
         return binding.root
 
     }
-
-    //TODO: Create method to load URL intents
 
 }

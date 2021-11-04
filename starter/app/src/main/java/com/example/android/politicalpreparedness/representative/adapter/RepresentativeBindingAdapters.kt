@@ -19,7 +19,6 @@ import com.example.android.politicalpreparedness.representative.model.Representa
 fun fetchImage(view: ImageView, src: String?) {
     src?.let {
         val uri = src.toUri().buildUpon().scheme("https").build()
-        //DONE : Add Glide call to load image and circle crop - user ic_profile as a placeholder and for errors.
         Glide.with(view.context)
                 .load(uri)
                 .apply(RequestOptions()
